@@ -4,6 +4,7 @@ from .models import bcrypt
 from .models import db
 from .views.user import user_api
 from .views.bank import bank_api
+from .views import limiter
 
 
 def create_app(env_name):
@@ -12,7 +13,7 @@ def create_app(env_name):
     app.config.from_object(app_config[env_name])
     bcrypt.init_app(app)
     db.init_app(app)
-
+    limiter.init_app(app)
     app.register_blueprint(user_api, url_prefix='/api/v1/users')
     app.register_blueprint(bank_api, url_prefix='/api/v1/banks')
 

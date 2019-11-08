@@ -2,6 +2,7 @@ from flask import request, json, Response, Blueprint, g
 from ..models.bank import Bank
 from ..models.branch import Branch
 from ..shared.authentication import Auth
+from . import limiter
 
 bank_api = Blueprint('bank_api', __name__)
 
@@ -17,6 +18,7 @@ def bank_detail(ifsc):
 
 @bank_api.route('/', methods=['GET'])
 @Auth.auth_required
+@limiter.limit('10/minute')
 def get_branches():
     bank_name = request.args.get('bank')
     city = request.args.get('city')
